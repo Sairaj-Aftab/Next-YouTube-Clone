@@ -5,10 +5,7 @@ export const uploadVideo = createAsyncThunk(
   "videos/upload_video",
   async ({ data }) => {
     try {
-      const response = await axios.post(
-        `http://localhost:3000/api/videos`,
-        data
-      );
+      const response = await axios.post(`/api/videos`, data);
       return response.data;
     } catch (error) {
       throw new Error(error.response.data.message);
@@ -21,7 +18,7 @@ export const getAllVideos = createAsyncThunk(
   "videos/getAllVideos",
   async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/videos`);
+      const response = await axios.get(`/api/videos`);
       return response.data;
     } catch (error) {
       throw new Error(error.response.data.message);
@@ -33,9 +30,7 @@ export const getUserVideos = createAsyncThunk(
   "videos/getUserVideos",
   async (userId) => {
     try {
-      const response = await axios.get(
-        `http://localhost:3000/api/videos/uservid/${userId}`
-      );
+      const response = await axios.get(`/api/videos/uservid/${userId}`);
       return response.data;
     } catch (error) {
       throw new Error(error.response.data.message);
