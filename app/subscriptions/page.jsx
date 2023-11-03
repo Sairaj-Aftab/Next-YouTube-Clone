@@ -1,6 +1,5 @@
 import React from "react";
 import MainPages from "../components/MainPages";
-// import VideoCard from "../components/VideoCard/VideoCard";
 
 function Subscriptions() {
   return (
