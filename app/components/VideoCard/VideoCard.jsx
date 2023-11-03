@@ -29,7 +29,7 @@ function VideoCard({ videos }) {
       onMouseEnter={mouseHoverPlay}
       onMouseLeave={mouseLeave}
     >
-      <Link href={`/video/${videos._id}`}>
+      <Link href={`/video/${videos?._id}`}>
         {video ? (
           <video ref={ref} src={videos.video} className="w-full h-52"></video>
         ) : (
