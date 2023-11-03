@@ -1,0 +1,9 @@
+.nav {
+  @apply fixed z-50 top-0 left-0 right-0 bg-[var(--base-background)] flex justify-between items-center py-3 px-3 md:px-6;
+}
+.nav input {
+  border: 1px solid hsl(0, 0%, 18.82%);
+}
+.nav input:focus {
+  border: 1px solid skyblue;
+}
