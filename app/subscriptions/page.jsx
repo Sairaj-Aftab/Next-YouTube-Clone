@@ -1,6 +1,6 @@
 import React from "react";
 import MainPages from "../components/MainPages";
-import VideoCard from "../components/VideoCard/VideoCard";
+// import VideoCard from "../components/VideoCard/VideoCard";
 
 function Subscriptions() {
   return (
@@ -14,10 +14,10 @@ function Subscriptions() {
         </div>
         {/* Feed */}
         <div className="grid grid-cols-1 gap-y-3 sm:grid sm:grid-cols-2 sm:gap-x-3 sm:gap-y-5 md:grid md:grid-cols-3 md:gap-x-3 md:gap-y-7">
+          {/* <VideoCard />
           <VideoCard />
           <VideoCard />
-          <VideoCard />
-          <VideoCard />
+          <VideoCard /> */}
         </div>
       </div>
     </MainPages>
