@@ -5,7 +5,11 @@ import { useState, useRef } from "react";
 import profileImg from "@/public/profile.jpg";
 import Link from "next/link";
 import timeAgo from "@/utils/timeAgo";
+import viewsCountFormat from "@/utils/viewsCountFormat";
+import { useDispatch } from "react-redux";
+import { updateViewsCounting } from "@/redux/features/videos/videoApiSlice";
 function VideoCard({ videos }) {
+  const dispatch = useDispatch();
   const ref = useRef(null);
 
   const [video, setVideo] = useState(false);
@@ -23,13 +27,17 @@ function VideoCard({ videos }) {
       ref.current.pause();
     }
   };
+
+  const handleUpdateViews = () => {
+    dispatch(updateViewsCounting(videos?._id));
+  };
   return (
     <div
       className="cursor-pointer flex flex-col gap-3"
       onMouseEnter={mouseHoverPlay}
       onMouseLeave={mouseLeave}
     >
-      <Link href={`/video/${videos?._id}`}>
+      <Link href={`/video/${videos?._id}`} onClick={handleUpdateViews}>
         {video ? (
           <video ref={ref} src={videos.video} className="w-full h-52"></video>
         ) : (
@@ -71,7 +79,8 @@ function VideoCard({ videos }) {
             href="/video/456345"
             className="text-[#aaa] text-sm font-normal"
           >
-            829k views . {timeAgo(new Date(videos.createdAt))}
+            {viewsCountFormat(videos.views)} views .{" "}
+            {timeAgo(new Date(videos.createdAt))}
           </Link>
         </div>
       </div>

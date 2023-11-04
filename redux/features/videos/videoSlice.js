@@ -4,6 +4,7 @@ import {
   getAllVideos,
   getUserVideos,
   searchPhotos,
+  updateViewsCounting,
   uploadVideo,
 } from "./videoApiSlice";
 
@@ -62,6 +63,20 @@ const videosSlice = createSlice({
       })
       .addCase(getUserVideos.fulfilled, (state, action) => {
         state.userVideos = action.payload.video;
+        state.success = true;
+        state.loader = false;
+      })
+      .addCase(updateViewsCounting.pending, (state, action) => {
+        state.loader = true;
+      })
+      .addCase(updateViewsCounting.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loader = false;
+      })
+      .addCase(updateViewsCounting.fulfilled, (state, action) => {
+        state.videos[
+          state.videos.findIndex((data) => data._id == action.payload.video._id)
+        ] = action.payload.video;
         state.success = true;
         state.loader = false;
       })

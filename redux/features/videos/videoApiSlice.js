@@ -37,6 +37,18 @@ export const getUserVideos = createAsyncThunk(
     }
   }
 );
+// Views counting in videos
+export const updateViewsCounting = createAsyncThunk(
+  "videos/updateViewsCounting",
+  async (videoId) => {
+    try {
+      const response = await axios.put(`/api/videos/${videoId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
 // Get Search Photos
 export const searchPhotos = createAsyncThunk(
   "photos/searchPhotos",

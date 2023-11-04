@@ -3,11 +3,12 @@ import Link from "next/link";
 import React, { useState } from "react";
 import profileImg from "@/public/profile.jpg";
 import { BiDislike, BiLike } from "react-icons/bi";
+import viewsCountFormat from "@/utils/viewsCountFormat";
 
 const demoText =
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae unde accusamus facere fuga atque soluta hic pariatur earum nisi. Saepe necessitatibus vero nemo provident eaque eum temporibus autem sapiente, quae molestias nam quas expedita, pariatur aliquam omnis unde, tenetur esse! Nostrum ipsum error, amet deleniti corrupti at, delectus vitae inventore doloribus rerum saepe modi quasi explicabo! Voluptatem aspernatur sed, aliquid cum dolores eaque quos incidunt quibusdam voluptates, iusto neque nam?";
 
-function ProfileDescSection() {
+function ProfileDescSection({ views }) {
   const [des, setDes] = useState(false);
 
   const handleShowMore = () => {
@@ -58,7 +59,9 @@ function ProfileDescSection() {
       </div>
       {/* Description */}
       <div className="mx-2 sm:mx-0 bg-[#27272c] hover:bg-[#3e3e41] rounded-lg p-3 cursor-pointer text-white">
-        <p className="text-base font-bold">5678 views 13 hours ago</p>
+        <p className="text-base font-bold">
+          {viewsCountFormat(views)} views 13 hours ago
+        </p>
         <p className="text-base font-semibold" onClick={handleShowMore}>
           {des && demoText}
           {!des && demoText.length >= 250
