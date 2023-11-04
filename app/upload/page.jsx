@@ -30,7 +30,7 @@ function UploadFile() {
     },
   });
 
-  const userId = session?.user && session.user.id;
+  const userId = session?.user && session.user?.doc._id;
 
   const [loading, setLoading] = useState(null);
   const [imgLoading, setImgLoading] = useState(null);
