@@ -19,6 +19,18 @@ export async function PUT(request, { params }) {
   }
 }
 
+// Delete Single Video
+export async function DELETE(request, { params }) {
+  try {
+    await connectMongoDB();
+
+    const video = await Video.findByIdAndDelete(params.id);
+
+    return NextResponse.json({ message: "Successfully deleted", video });
+  } catch (error) {
+    return NextResponse.json({ error: error.message });
+  }
+}
 // GET Single Video
 export async function GET(request, { params }) {
   try {

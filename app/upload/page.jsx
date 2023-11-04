@@ -34,15 +34,6 @@ function UploadFile() {
 
   const [loading, setLoading] = useState(null);
   const [imgLoading, setImgLoading] = useState(null);
-  // useEffect(() => {
-  //   if (loading === 100) {
-  //     setLoading(null);
-  //     setFileLink(null);
-  //   }
-  //   if (imgLoading === 100) {
-  //     setImgLoading(null);
-  //   }
-  // }, [loading, imgLoading]);
 
   const [file, setFile] = useState(undefined);
   const [imgFile, setImgFile] = useState(undefined);

@@ -1,11 +1,10 @@
 "use client";
 import profileImg from "@/public/profile.jpg";
-import { getUserVideos } from "@/redux/features/videos/videoApiSlice";
 import { videosData } from "@/redux/features/videos/videoSlice";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import VideoCard from "./VideoCard/VideoCard";
 import DataFetching from "./DataFetching";
 

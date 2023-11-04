@@ -1,5 +1,6 @@
 import connectMongoDB from "@/config/database";
 import Video from "@/models/video";
+import makeSlug from "@/utils/makeSlug";
 import tagMake from "@/utils/tagMake";
 import { NextResponse } from "next/server";
 
@@ -8,7 +9,7 @@ export async function GET(request) {
   try {
     await connectMongoDB();
 
-    const video = await Video.find();
+    const video = await Video.find().populate("userId");
 
     return NextResponse.json({ video });
   } catch (error) {
@@ -25,6 +26,7 @@ export async function POST(request) {
 
     const video = await Video.create({
       ...data,
+      slug: makeSlug(data.title),
       tags,
     });
 

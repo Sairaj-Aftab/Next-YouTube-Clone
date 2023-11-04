@@ -49,6 +49,18 @@ export const updateViewsCounting = createAsyncThunk(
     }
   }
 );
+// Delete single video
+export const deleteVideo = createAsyncThunk(
+  "videos/deleteVideo",
+  async (videoId) => {
+    try {
+      const response = await axios.delete(`/api/videos/${videoId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
 // Get Search Photos
 export const searchPhotos = createAsyncThunk(
   "photos/searchPhotos",

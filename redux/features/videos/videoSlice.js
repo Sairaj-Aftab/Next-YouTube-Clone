@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  deletePhoto,
+  deleteVideo,
   getAllVideos,
   getUserVideos,
   searchPhotos,
@@ -92,16 +92,19 @@ const videosSlice = createSlice({
         state.success = true;
         state.loader = false;
       })
-      .addCase(deletePhoto.pending, (state, action) => {
+      .addCase(deleteVideo.pending, (state, action) => {
         state.loader = true;
       })
-      .addCase(deletePhoto.rejected, (state, action) => {
+      .addCase(deleteVideo.rejected, (state, action) => {
         state.error = action.error.message;
         state.loader = false;
       })
-      .addCase(deletePhoto.fulfilled, (state, action) => {
-        state.photos = state.photos.filter(
-          (data) => data._id !== action.payload.delete._id
+      .addCase(deleteVideo.fulfilled, (state, action) => {
+        state.userVideos = state.userVideos.filter(
+          (data) => data._id !== action.payload.video._id
+        );
+        state.videos = state.videos.filter(
+          (data) => data._id !== action.payload.video._id
         );
         state.success = true;
         state.loader = false;
