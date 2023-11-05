@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
 import { BiBell, BiVideoPlus } from "react-icons/bi";
@@ -11,12 +11,36 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import ProfileMenu from "./ProfileMenu";
 import useDropdownPopupControl from "../../../hooks/useDropdownPopupControl";
+import { useDispatch, useSelector } from "react-redux";
+import { videosData } from "@/redux/features/videos/videoSlice";
+import { toast } from "react-toastify";
+import { searchVideos } from "@/redux/features/videos/videoApiSlice";
+import { usePathname, useRouter } from "next/navigation";
+import makeSlug from "@/utils/makeSlug";
 
 function Nav() {
+  const dispatch = useDispatch();
   const { data: session } = useSession();
+  const [search, setSearch] = useState();
+  const router = useRouter();
+  const path = usePathname();
+
   const { open, toggleMenu, dropDownRef } = useDropdownPopupControl();
 
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const makeSearchSlug = makeSlug(search);
+    if (makeSearchSlug) {
+      router.push(`/search/${makeSearchSlug}`);
+      dispatch(searchVideos(search));
+    }
+  };
+  // When reload the search page then it will be work
+  useEffect(() => {
+    dispatch(searchVideos(path.slice(8).split("-").join(" ")));
+  }, [dispatch]);
   return (
     <div className={styles.nav}>
       <div className="flex items-center gap-1 md:gap-2 lg:gap-5">
@@ -31,23 +55,29 @@ function Nav() {
         </Link>
       </div>
       <div className="w-full">
-        <div className="flex items-center justify-end sm:justify-center">
+        <form
+          onSubmit={handleSearch}
+          className="flex items-center justify-end sm:justify-center"
+        >
           <div className="sm:hidden text-2xl text-[#aaa] mr-3">
             <AiOutlineSearch />
           </div>
           <input
+            onChange={(e) => setSearch(e.target.value)}
+            value={search}
             id="search"
             type="text"
             placeholder="Search"
             className="hidden sm:block bg-[var(--search-box-background)] text-[hsla(0, 100%, 100%, 0.88)] placeholder:text-[hsl(0, 0%, 18.82%)] py-1 px-3 text-lg rounded-l-full rounded-r-full md:rounded-r-none w-[95%] md:w-[60%]"
           />
           <label
+            onClick={handleSearch}
             htmlFor="search"
             className="hidden md:block text-2xl text-white py-2 px-5 bg-[#222222] rounded-r-full cursor-pointer"
           >
             <AiOutlineSearch />
           </label>
-        </div>
+        </form>
       </div>
       <div className={styles.right}>
         {session ? (

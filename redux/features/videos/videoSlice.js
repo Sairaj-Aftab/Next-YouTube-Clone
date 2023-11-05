@@ -4,6 +4,7 @@ import {
   getAllVideos,
   getUserVideos,
   searchPhotos,
+  searchVideos,
   updateViewsCounting,
   uploadVideo,
 } from "./videoApiSlice";
@@ -13,6 +14,7 @@ const videosSlice = createSlice({
   initialState: {
     videos: null,
     userVideos: null,
+    searchVideos: null,
     tags: [],
     loader: false,
     success: false,
@@ -77,6 +79,19 @@ const videosSlice = createSlice({
         state.videos[
           state.videos.findIndex((data) => data._id == action.payload.video._id)
         ] = action.payload.video;
+        state.success = true;
+        state.loader = false;
+      })
+      .addCase(searchVideos.pending, (state, action) => {
+        state.loader = true;
+      })
+      .addCase(searchVideos.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loader = false;
+      })
+      .addCase(searchVideos.fulfilled, (state, action) => {
+        state.searchVideos = action.payload.video;
+        state.message = action.payload.message;
         state.success = true;
         state.loader = false;
       })

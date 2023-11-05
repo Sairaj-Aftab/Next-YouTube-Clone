@@ -1,5 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { videosData } from "./videoSlice";
 
 export const uploadVideo = createAsyncThunk(
   "videos/upload_video",
@@ -55,6 +57,19 @@ export const deleteVideo = createAsyncThunk(
   async (videoId) => {
     try {
       const response = await axios.delete(`/api/videos/${videoId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+// Get Search Photos
+export const searchVideos = createAsyncThunk(
+  "videos/searchVideos",
+  async (search) => {
+    try {
+      const response = await axios.post(`/api/videos/search`, { search });
+      console.log(response.data.message);
       return response.data;
     } catch (error) {
       throw new Error(error.response.data.message);

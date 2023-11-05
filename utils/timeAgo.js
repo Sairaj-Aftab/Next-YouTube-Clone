@@ -18,11 +18,17 @@ function timeAgo(date) {
   }
 
   const days = Math.floor(hours / 24);
+  if (days < 2) {
+    return days + " day ago";
+  }
   if (days < 30) {
     return days + " days ago";
   }
 
   const months = Math.floor(days / 30);
+  if (months < 2) {
+    return months + " month ago";
+  }
   if (months < 12) {
     return months + " months ago";
   }

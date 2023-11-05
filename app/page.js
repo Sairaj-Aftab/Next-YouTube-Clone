@@ -5,7 +5,8 @@ import MainView from "./components/MainView/MainView";
 
 export default async function Home() {
   return (
-    <main className="pl-0 sm:pl-[4.5rem] lg:pl-60">
+    // className="pl-0 sm:pl-[4.5rem] lg:pl-60"
+    <main>
       <MainView />
     </main>
   );

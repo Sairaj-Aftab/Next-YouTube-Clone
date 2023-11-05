@@ -11,6 +11,7 @@ function DataFetching({ params }) {
 
   useEffect(() => {
     dispatch(getAllVideos());
+
     dispatch(getUserVideos(params?.id));
   }, [dispatch]);
 
