@@ -7,6 +7,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import VideoCard from "./VideoCard/VideoCard";
 import DataFetching from "./DataFetching";
+import CardLoading from "./LoadingComponents/CardLoading";
 
 function ProfilePage({ params }) {
   const { data: session } = useSession();
@@ -39,10 +40,20 @@ function ProfilePage({ params }) {
         </div>
       </div>
       <div className="grid grid-cols-1 gap-y-3 sm:grid sm:grid-cols-2 sm:gap-x-3 sm:gap-y-5 md:grid md:grid-cols-3 md:gap-x-3 md:gap-y-7 mt-5">
-        {userVideos &&
+        {userVideos ? (
           userVideos.map((data, index) => (
             <VideoCard key={index} videos={data} />
-          ))}
+          ))
+        ) : (
+          <>
+            <CardLoading />
+            <CardLoading />
+            <CardLoading />
+            <CardLoading />
+            <CardLoading />
+            <CardLoading />
+          </>
+        )}
       </div>
     </div>
   );

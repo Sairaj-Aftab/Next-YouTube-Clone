@@ -1,6 +1,7 @@
 import { Roboto } from "next/font/google";
 import { Providers } from "../redux/providers";
 import Nav from "./components/Nav/Nav";
+import "react-loading-skeleton/dist/skeleton.css";
 import "./globals.css";
 import HomeSideBar from "./components/HomeSideBar/HomeSideBar";
 import "react-toastify/dist/ReactToastify.css";
