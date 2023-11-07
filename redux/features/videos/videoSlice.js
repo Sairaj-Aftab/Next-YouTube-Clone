@@ -52,7 +52,7 @@ const videosSlice = createSlice({
         state.loader = false;
       })
       .addCase(getAllVideos.fulfilled, (state, action) => {
-        state.videos = action.payload.video;
+        state.videos = action.payload.video.reverse();
         state.success = true;
         state.loader = false;
       })

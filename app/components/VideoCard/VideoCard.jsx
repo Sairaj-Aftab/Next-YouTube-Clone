@@ -110,7 +110,7 @@ function VideoCard({ videos }) {
           </Link>
           <Link
             href="/profile/fjke564"
-            className="text-[#aaa] text-sm font-normal mt-1 sm:mt-2"
+            className="text-[#aaa] text-sm font-normal mt-1"
           >
             {videos?.userId?.name}
           </Link>
