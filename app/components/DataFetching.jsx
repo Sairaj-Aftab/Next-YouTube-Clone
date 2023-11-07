@@ -12,7 +12,9 @@ function DataFetching({ params }) {
   useEffect(() => {
     dispatch(getAllVideos());
 
-    dispatch(getUserVideos(params?.id));
+    if (params?.id) {
+      dispatch(getUserVideos(params?.id));
+    }
   }, [dispatch]);
 
   return <></>;

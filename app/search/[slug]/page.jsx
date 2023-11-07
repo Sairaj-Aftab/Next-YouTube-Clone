@@ -1,4 +1,5 @@
 "use client";
+import HorizontalCardLoading from "@/app/components/LoadingComponents/HorizontalCardLoading";
 import MainPages from "@/app/components/MainPages";
 import CategoryNav from "@/app/components/MainView/CategoryNav";
 import HorizontalCard from "@/app/components/VideoCard/HorizontalCard";
@@ -7,7 +8,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 function SearchPage({ params }) {
-  const { searchVideos, message } = useSelector(videosData);
+  const { searchVideos, message, loader } = useSelector(videosData);
   return (
     <MainPages>
       <CategoryNav />

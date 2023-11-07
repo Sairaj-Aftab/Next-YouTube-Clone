@@ -22,18 +22,18 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <Providers>
-      <SessionProviders>
-        <html lang="en" className={roboto.className}>
-          <body>
-            <Toastify />
+    <html lang="en" className={roboto.className}>
+      <body>
+        <Providers>
+          <SessionProviders>
             <DataFetching />
+            <Toastify />
             <Nav />
             <HomeSideBar />
             <main>{children}</main>
-          </body>
-        </html>
-      </SessionProviders>
-    </Providers>
+          </SessionProviders>
+        </Providers>
+      </body>
+    </html>
   );
 }
