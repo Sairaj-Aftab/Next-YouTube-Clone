@@ -24,7 +24,7 @@ const videoModel = new mongoose.Schema(
     },
     thumbnail: {
       type: String,
-      required: true,
+      default: null,
     },
     views: {
       type: Number,
@@ -35,11 +35,13 @@ const videoModel = new mongoose.Schema(
       default: [],
     },
     likes: {
-      type: [String],
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
       default: [],
     },
     dislikes: {
-      type: [String],
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
       default: [],
     },
   },

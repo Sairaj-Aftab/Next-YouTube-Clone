@@ -36,7 +36,6 @@ function UploadFile() {
   const [imgLoading, setImgLoading] = useState(null);
 
   const [file, setFile] = useState(undefined);
-  const [imgFile, setImgFile] = useState(undefined);
   const [fileLink, setFileLink] = useState(null);
   const [imgLink, setImgLink] = useState(null);
 
@@ -55,13 +54,6 @@ function UploadFile() {
     setFile(e.target.files?.[0]);
     const urlLink = URL.createObjectURL(e.target.files?.[0]);
     setFileLink(urlLink);
-  };
-  const handleChangeImgFile = (e) => {
-    // setInput((prev) => ({ ...prev, thumbnail: e.target.files?.[0] }));
-    setImgFile(e.target.files?.[0]);
-
-    const urlLink = URL.createObjectURL(e.target.files?.[0]);
-    setImgLink(urlLink);
   };
 
   const [task, setUploadTask] = useState(null);
@@ -120,7 +112,7 @@ function UploadFile() {
               title: input.title,
               desc: input.desc,
               video: downloadURL,
-              thumbnail: imgLink,
+              thumbnail: imgLink ? imgLink : null,
               tags: input.tags,
             };
             dispatch(uploadVideo({ data }));
@@ -187,7 +179,6 @@ function UploadFile() {
         if (task) {
           task.cancel();
           setFile(undefined);
-          setImgFile(undefined);
           setImgLink(null);
           setUploadTask(null);
           setInput({ title: "", desc: "", tags: "" });
@@ -206,7 +197,6 @@ function UploadFile() {
     if (success || message) {
       // dispatch(getAllPhotos());
       setFile(undefined);
-      setImgFile(undefined);
       setImgLink(null);
       setInput({ title: "", desc: "", tags: "" });
       setLoading(null);
@@ -313,10 +303,9 @@ function UploadFile() {
                     accept="image/*"
                     className="w-full h-full absolute top-0 left-0 bottom-0 right-0 cursor-pointer opacity-0"
                   />
-                  {imgLoading && (
+                  {imgLoading ? (
                     <UploadProgressBar loading={Number(imgLoading)} />
-                  )}
-                  {!imgLoading && (
+                  ) : (
                     <Image
                       className="w-[150px] h-[100px] object-cover rounded-md border-2 border-yellow-400"
                       src={imgLink ? imgLink : thumbnail}
@@ -325,6 +314,8 @@ function UploadFile() {
                       height={100}
                     />
                   )}
+                  {/* {!imgLoading && (
+                  )} */}
                 </div>
               )}
               <textarea
@@ -345,7 +336,7 @@ function UploadFile() {
               />
               <button
                 type="submit"
-                disabled={!input.title || !input.desc || !fileLink || !imgLink}
+                disabled={!input.title || !input.desc || !fileLink}
                 className="text-lg font-bold text-white bg-blue-500 disabled:bg-[#cccccc] disabled:text-[#666666] py-1 rounded-md"
               >
                 Upload

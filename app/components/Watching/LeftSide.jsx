@@ -22,7 +22,7 @@ function LeftSide({ video }) {
         {video?.title}
       </h1>
       {/* Profile and Description Section */}
-      <ProfileDescSection views={video?.views} />
+      <ProfileDescSection video={video} />
       {/* Comment Section */}
       <Comments />
     </>

@@ -27,6 +27,18 @@ export const getAllVideos = createAsyncThunk(
     }
   }
 );
+// Get Single Video
+export const getSingleVideo = createAsyncThunk(
+  "videos/getSingleVideo",
+  async (id) => {
+    try {
+      const response = await axios.get(`/api/videos/${id}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
 // Get single user videos
 export const getUserVideos = createAsyncThunk(
   "videos/getUserVideos",
@@ -70,6 +82,56 @@ export const searchVideos = createAsyncThunk(
     try {
       const response = await axios.post(`/api/videos/search`, { search });
       console.log(response.data.message);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+// like to video
+export const likeToVideo = createAsyncThunk(
+  "videos/likeToVideo",
+  async ({ id, userId }) => {
+    try {
+      const response = await axios.put(`/api/videos/like/${id}/${userId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+// Dislike to video
+export const disLikeToVideo = createAsyncThunk(
+  "videos/disLikeToVideo",
+  async ({ id, userId }) => {
+    try {
+      const response = await axios.put(`/api/videos/dislike/${id}/${userId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+// Comment to video
+export const commentToVideo = createAsyncThunk(
+  "comment/commentToVideo",
+  async ({ videoId, userId, desc }) => {
+    try {
+      const response = await axios.post(`/api/comment/${videoId}/${userId}`, {
+        desc,
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+// Get comment to video
+export const getComment = createAsyncThunk(
+  "comment/getComment",
+  async ({ videoId }) => {
+    try {
+      const response = await axios.get(`/api/comment/get/${videoId}`);
       return response.data;
     } catch (error) {
       throw new Error(error.response.data.message);

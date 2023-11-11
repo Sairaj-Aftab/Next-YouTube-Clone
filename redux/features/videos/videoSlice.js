@@ -1,8 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  commentToVideo,
   deleteVideo,
+  disLikeToVideo,
   getAllVideos,
+  getComment,
+  getSingleVideo,
   getUserVideos,
+  likeToVideo,
   searchPhotos,
   searchVideos,
   updateViewsCounting,
@@ -14,8 +19,10 @@ const videosSlice = createSlice({
   initialState: {
     videos: null,
     userVideos: null,
+    singleVideo: null,
     searchVideos: null,
     tags: [],
+    comments: null,
     loader: false,
     success: false,
     message: null,
@@ -53,6 +60,18 @@ const videosSlice = createSlice({
       })
       .addCase(getAllVideos.fulfilled, (state, action) => {
         state.videos = action.payload.video.reverse();
+        state.success = true;
+        state.loader = false;
+      })
+      .addCase(getSingleVideo.pending, (state, action) => {
+        state.loader = true;
+      })
+      .addCase(getSingleVideo.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loader = false;
+      })
+      .addCase(getSingleVideo.fulfilled, (state, action) => {
+        state.singleVideo = action.payload.video;
         state.success = true;
         state.loader = false;
       })
@@ -95,15 +114,52 @@ const videosSlice = createSlice({
         state.success = true;
         state.loader = false;
       })
-      .addCase(searchPhotos.pending, (state, action) => {
+      .addCase(likeToVideo.pending, (state, action) => {
         state.loader = true;
       })
-      .addCase(searchPhotos.rejected, (state, action) => {
+      .addCase(likeToVideo.rejected, (state, action) => {
         state.error = action.error.message;
         state.loader = false;
       })
-      .addCase(searchPhotos.fulfilled, (state, action) => {
-        state.photos = action.payload.photos;
+      .addCase(likeToVideo.fulfilled, (state, action) => {
+        state.singleVideo = action.payload.videoUpdate;
+        state.success = true;
+        state.loader = false;
+      })
+      .addCase(disLikeToVideo.pending, (state, action) => {
+        state.loader = true;
+      })
+      .addCase(disLikeToVideo.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loader = false;
+      })
+      .addCase(disLikeToVideo.fulfilled, (state, action) => {
+        state.singleVideo = action.payload.videoUpdate;
+        state.success = true;
+        state.loader = false;
+      })
+      .addCase(commentToVideo.pending, (state, action) => {
+        state.loader = true;
+      })
+      .addCase(commentToVideo.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loader = false;
+      })
+      .addCase(commentToVideo.fulfilled, (state, action) => {
+        state.comments = state.comments ?? [];
+        state.comments.push(action.payload.comment);
+        state.success = true;
+        state.loader = false;
+      })
+      .addCase(getComment.pending, (state, action) => {
+        state.loader = true;
+      })
+      .addCase(getComment.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loader = false;
+      })
+      .addCase(getComment.fulfilled, (state, action) => {
+        state.comments = action.payload.comment;
         state.success = true;
         state.loader = false;
       })
@@ -123,7 +179,6 @@ const videosSlice = createSlice({
         );
         state.success = true;
         state.loader = false;
-        state.message = action.payload.message;
       });
   },
 });

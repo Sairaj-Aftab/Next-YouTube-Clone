@@ -15,24 +15,24 @@ import {
 } from "@/redux/features/videos/videoApiSlice";
 import { useSession } from "next-auth/react";
 import swal from "sweetalert";
+import { deleteObject, ref } from "firebase/storage";
+import { firebaseStorage } from "@/firebase/main";
+import { toast } from "react-toastify";
 function VideoCard({ videos }) {
   const dispatch = useDispatch();
   const { data: session } = useSession();
-  const ref = useRef(null);
+  const videoRef = useRef(null);
 
-  const [video, setVideo] = useState(false);
   const mouseHoverPlay = (e) => {
     e.preventDefault();
-    setVideo(true);
-    if (ref.current) {
-      ref.current.play();
+    if (videoRef.current) {
+      videoRef.current.play();
     }
   };
   const mouseLeave = (e) => {
     e.preventDefault();
-    setVideo(false);
-    if (ref.current) {
-      ref.current.pause();
+    if (videoRef.current) {
+      videoRef.current.pause();
     }
   };
 
@@ -49,7 +49,26 @@ function VideoCard({ videos }) {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        dispatch(deleteVideo(videos?._id));
+        // Create a reference to the file to delete
+        const firebaseImgRef = ref(firebaseStorage, videos?.thumbnail);
+        // const firebaseVidRef = ref(firebaseStorage, videos?.video);
+
+        function deleteFiles(filePaths) {
+          filePaths.forEach(function (filePath) {
+            // var fileRef = storageRef.child(filePath);
+            const fileRef = ref(firebaseStorage, filePath);
+            deleteObject(fileRef)
+              .then(() => {
+                // File deleted successfully
+                dispatch(deleteVideo(videos?._id));
+              })
+              .catch((error) => {
+                toast.error("File not deleted");
+              });
+          });
+        }
+
+        deleteFiles([videos?.video, videos?.thumbnail]);
         swal("Poof! Your imaginary file has been deleted!", {
           icon: "success",
         });
@@ -60,7 +79,7 @@ function VideoCard({ videos }) {
   };
   return (
     <div
-      className="cursor-pointer flex flex-col gap-3 relative"
+      className="cursor-pointer flex flex-col gap-3 relative group"
       onMouseEnter={mouseHoverPlay}
       onMouseLeave={mouseLeave}
     >
@@ -75,8 +94,24 @@ function VideoCard({ videos }) {
       <Link
         href={`/video/${videos?.slug}/${videos?._id}`}
         onClick={handleUpdateViews}
+        className="relative w-full h-52 sm:rounded-md"
       >
-        {video ? (
+        {videos.thumbnail && (
+          <Image
+            src={videos.thumbnail}
+            width={0}
+            height={0}
+            sizes="100vw"
+            alt="Thumbnail"
+            className="absolute top-0 left-0 w-full h-full z-10 object-cover sm:rounded-md group-hover:hidden"
+          />
+        )}
+        <video
+          ref={videoRef}
+          src={videos.video}
+          className="w-full h-full absolute top-0 left-0 sm:rounded-md"
+        ></video>
+        {/* {video ? (
           <video ref={ref} src={videos.video} className="w-full h-52"></video>
         ) : (
           <Image
@@ -87,7 +122,7 @@ function VideoCard({ videos }) {
             alt="Thumbnail"
             className="w-full h-52 object-cover sm:rounded-md"
           />
-        )}
+        )} */}
       </Link>
 
       <div className="flex gap-2 px-2 sm:px-0">

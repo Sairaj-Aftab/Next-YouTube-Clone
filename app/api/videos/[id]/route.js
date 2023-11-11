@@ -2,7 +2,7 @@ import connectMongoDB from "@/config/database";
 import Video from "@/models/video";
 import { NextResponse } from "next/server";
 
-// GET Single Video
+// Views counting
 export async function PUT(request, { params }) {
   try {
     await connectMongoDB();

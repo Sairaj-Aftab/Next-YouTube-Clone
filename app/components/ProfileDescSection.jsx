@@ -2,17 +2,40 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import profileImg from "@/public/profile.jpg";
-import { BiDislike, BiLike } from "react-icons/bi";
+import { BiDislike, BiLike, BiSolidLike, BiSolidDislike } from "react-icons/bi";
 import viewsCountFormat from "@/utils/viewsCountFormat";
+import { useDispatch, useSelector } from "react-redux";
+import { videosData } from "@/redux/features/videos/videoSlice";
+import timeAgo from "@/utils/timeAgo";
+import { useSession } from "next-auth/react";
+import {
+  disLikeToVideo,
+  likeToVideo,
+} from "@/redux/features/videos/videoApiSlice";
 
 const demoText =
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae unde accusamus facere fuga atque soluta hic pariatur earum nisi. Saepe necessitatibus vero nemo provident eaque eum temporibus autem sapiente, quae molestias nam quas expedita, pariatur aliquam omnis unde, tenetur esse! Nostrum ipsum error, amet deleniti corrupti at, delectus vitae inventore doloribus rerum saepe modi quasi explicabo! Voluptatem aspernatur sed, aliquid cum dolores eaque quos incidunt quibusdam voluptates, iusto neque nam?";
 
-function ProfileDescSection({ views }) {
+function ProfileDescSection() {
+  const dispatch = useDispatch();
+  const { singleVideo } = useSelector(videosData);
+  const { data: session } = useSession();
+  const userId = session && session?.user?.doc._id;
   const [des, setDes] = useState(false);
 
   const handleShowMore = () => {
     setDes(true);
+  };
+
+  const handleLike = () => {
+    dispatch(
+      likeToVideo({ id: singleVideo._id, userId: session?.user?.doc._id })
+    );
+  };
+  const handleDislike = () => {
+    dispatch(
+      disLikeToVideo({ id: singleVideo._id, userId: session?.user?.doc._id })
+    );
   };
   return (
     <>
@@ -46,13 +69,31 @@ function ProfileDescSection({ views }) {
         </div>
         <div>
           <div className="w-28 md:w-auto mt-2 md:mt-auto flex py-1 md:py-2 px-2 md:px-3 bg-[#252637] rounded-full">
-            <div className="flex gap-1 items-center border-r text-lg md:text-2xl pr-2 md:pr-5 cursor-pointer">
-              <BiLike />
-              <span className="text-sm font-semibold text-white">76</span>
+            <div
+              onClick={handleLike}
+              className="flex gap-1 items-center border-r text-lg md:text-2xl pr-2 md:pr-5 cursor-pointer"
+            >
+              {singleVideo?.likes.includes(session?.user?.doc._id) ? (
+                <BiSolidLike />
+              ) : (
+                <BiLike />
+              )}
+              <span className="text-sm font-semibold text-white">
+                {singleVideo?.likes.length}
+              </span>
             </div>
-            <div className="flex gap-1 items-center text-lg md:text-2xl pl-2 md:pl-5 cursor-pointer">
-              <span className="text-sm font-semibold text-white">02</span>
-              <BiDislike />
+            <div
+              onClick={handleDislike}
+              className="flex gap-1 items-center text-lg md:text-2xl pl-2 md:pl-5 cursor-pointer"
+            >
+              <span className="text-sm font-semibold text-white">
+                {singleVideo?.dislikes.length}
+              </span>
+              {singleVideo?.dislikes.includes(session?.user?.doc._id) ? (
+                <BiSolidDislike />
+              ) : (
+                <BiDislike />
+              )}
             </div>
           </div>
         </div>
@@ -60,14 +101,15 @@ function ProfileDescSection({ views }) {
       {/* Description */}
       <div className="mx-2 sm:mx-0 bg-[#27272c] hover:bg-[#3e3e41] rounded-lg p-3 cursor-pointer text-white">
         <p className="text-base font-bold">
-          {viewsCountFormat(views)} views 13 hours ago
+          {viewsCountFormat(singleVideo.views)} views{" "}
+          {timeAgo(new Date(singleVideo.createdAt))}
         </p>
         <p className="text-base font-semibold" onClick={handleShowMore}>
-          {des && demoText}
-          {!des && demoText.length >= 250
-            ? demoText.substring(0, 250)
-            : demoText}
-          {!des && demoText.length >= 250 && (
+          {des && singleVideo?.desc}
+          {!des && singleVideo?.desc.length >= 250
+            ? singleVideo?.desc.substring(0, 250)
+            : singleVideo?.desc}
+          {!des && singleVideo?.desc.length >= 250 && (
             <button className="text-base font-bold shadow-lg">Show more</button>
           )}
         </p>
