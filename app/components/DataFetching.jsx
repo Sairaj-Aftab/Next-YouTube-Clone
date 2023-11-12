@@ -10,7 +10,7 @@ function DataFetching({ params }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllVideos());
+    // dispatch(getAllVideos());
 
     if (params?.id) {
       dispatch(getUserVideos(params?.id));

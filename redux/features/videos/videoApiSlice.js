@@ -81,7 +81,6 @@ export const searchVideos = createAsyncThunk(
   async (search) => {
     try {
       const response = await axios.post(`/api/videos/search`, { search });
-      console.log(response.data.message);
       return response.data;
     } catch (error) {
       throw new Error(error.response.data.message);
