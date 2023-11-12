@@ -16,14 +16,14 @@ function Video({ params }) {
 
   useEffect(() => {
     dispatch(getSingleVideo(params.id));
-    dispatch(getComment({ videoId: params.id }));
+    // dispatch(getComment({ videoId: params.id }));
   }, [dispatch]);
 
   return (
     <div className="mt-16 pb-20">
       <div className="md:flex gap-5">
         <div className="md:w-2/3 flex flex-col gap-3">
-          {video && <LeftSide video={video} />}
+          {video && <LeftSide video={video} params={params} />}
         </div>
         {/* Suggested Section like Left Side */}
         <div className="px-2 sm:px-0 md:w-1/3">

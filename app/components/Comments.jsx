@@ -1,14 +1,17 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import profileImg from "@/public/profile.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { videosData } from "@/redux/features/videos/videoSlice";
 import timeAgo from "@/utils/timeAgo";
 import { toast } from "react-toastify";
-import { commentToVideo } from "@/redux/features/videos/videoApiSlice";
+import {
+  commentToVideo,
+  getComment,
+} from "@/redux/features/videos/videoApiSlice";
 import { useSession } from "next-auth/react";
 
-function Comments() {
+function Comments({ params }) {
   const dispatch = useDispatch();
   const { comments, singleVideo } = useSelector(videosData);
   const { data: session } = useSession();
@@ -21,13 +24,16 @@ function Comments() {
     } else {
       dispatch(
         commentToVideo({
-          videoId: singleVideo?._id,
+          videoId: params.id,
           userId: session?.user?.doc._id,
           desc: input,
         })
       );
     }
   };
+  useEffect(() => {
+    dispatch(getComment({ videoId: params.id }));
+  }, [dispatch]);
   return (
     <div className="px-2 sm:px-0">
       <h1 className="text-2xl text-white font-extrabold">
@@ -66,7 +72,7 @@ function Comments() {
               <div className="flex flex-col gap-1">
                 <div className="flex gap-1">
                   <h3 className="text-sm font-extrabold text-white">
-                    {data?.userId?.name}
+                    {data?.userId.name}
                   </h3>
                   <span className="text-sm font-semibold text-[#aaa]">
                     {timeAgo(new Date(data?.createdAt))}

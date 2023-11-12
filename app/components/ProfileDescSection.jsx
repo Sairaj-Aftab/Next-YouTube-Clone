@@ -5,7 +5,7 @@ import profileImg from "@/public/profile.jpg";
 import { BiDislike, BiLike, BiSolidLike, BiSolidDislike } from "react-icons/bi";
 import viewsCountFormat from "@/utils/viewsCountFormat";
 import { useDispatch, useSelector } from "react-redux";
-import { videosData } from "@/redux/features/videos/videoSlice";
+import { dislike, like, videosData } from "@/redux/features/videos/videoSlice";
 import timeAgo from "@/utils/timeAgo";
 import { useSession } from "next-auth/react";
 import {
@@ -13,14 +13,10 @@ import {
   likeToVideo,
 } from "@/redux/features/videos/videoApiSlice";
 
-const demoText =
-  "Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae unde accusamus facere fuga atque soluta hic pariatur earum nisi. Saepe necessitatibus vero nemo provident eaque eum temporibus autem sapiente, quae molestias nam quas expedita, pariatur aliquam omnis unde, tenetur esse! Nostrum ipsum error, amet deleniti corrupti at, delectus vitae inventore doloribus rerum saepe modi quasi explicabo! Voluptatem aspernatur sed, aliquid cum dolores eaque quos incidunt quibusdam voluptates, iusto neque nam?";
-
 function ProfileDescSection() {
   const dispatch = useDispatch();
   const { singleVideo } = useSelector(videosData);
   const { data: session } = useSession();
-  const userId = session && session?.user?.doc._id;
   const [des, setDes] = useState(false);
 
   const handleShowMore = () => {
@@ -31,11 +27,13 @@ function ProfileDescSection() {
     dispatch(
       likeToVideo({ id: singleVideo._id, userId: session?.user?.doc._id })
     );
+    dispatch(like(session?.user?.doc._id));
   };
   const handleDislike = () => {
     dispatch(
       disLikeToVideo({ id: singleVideo._id, userId: session?.user?.doc._id })
     );
+    dispatch(dislike(session?.user?.doc._id));
   };
   return (
     <>

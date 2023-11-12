@@ -1,9 +1,8 @@
 "use client";
 import Image from "next/image";
 import React from "react";
-import { PiDotsThreeVerticalBold } from "react-icons/pi";
 import { MdDelete } from "react-icons/md";
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import profileImg from "@/public/profile.jpg";
 import Link from "next/link";
 import timeAgo from "@/utils/timeAgo";
@@ -15,9 +14,6 @@ import {
 } from "@/redux/features/videos/videoApiSlice";
 import { useSession } from "next-auth/react";
 import swal from "sweetalert";
-import { deleteObject, ref } from "firebase/storage";
-import { firebaseStorage } from "@/firebase/main";
-import { toast } from "react-toastify";
 function VideoCard({ videos }) {
   const dispatch = useDispatch();
   const { data: session } = useSession();
@@ -49,26 +45,7 @@ function VideoCard({ videos }) {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        // Create a reference to the file to delete
-        const firebaseImgRef = ref(firebaseStorage, videos?.thumbnail);
-        // const firebaseVidRef = ref(firebaseStorage, videos?.video);
-
-        function deleteFiles(filePaths) {
-          filePaths.forEach(function (filePath) {
-            // var fileRef = storageRef.child(filePath);
-            const fileRef = ref(firebaseStorage, filePath);
-            deleteObject(fileRef)
-              .then(() => {
-                // File deleted successfully
-                dispatch(deleteVideo(videos?._id));
-              })
-              .catch((error) => {
-                toast.error("File not deleted");
-              });
-          });
-        }
-
-        deleteFiles([videos?.video, videos?.thumbnail]);
+        dispatch(deleteVideo(videos?._id));
         swal("Poof! Your imaginary file has been deleted!", {
           icon: "success",
         });

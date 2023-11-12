@@ -34,6 +34,28 @@ const videosSlice = createSlice({
       state.message = null;
       state.error = null;
     },
+    like: (state, action) => {
+      if (!state.singleVideo.likes.includes(action.payload)) {
+        state.singleVideo.likes.push(action.payload);
+        state.singleVideo.dislikes.splice(
+          state.singleVideo.dislikes.findIndex(
+            (userId) => userId === action.payload
+          ),
+          1
+        );
+      }
+    },
+    dislike: (state, action) => {
+      if (!state.singleVideo.dislikes.includes(action.payload)) {
+        state.singleVideo.dislikes.push(action.payload);
+        state.singleVideo.likes.splice(
+          state.singleVideo.likes.findIndex(
+            (userId) => userId === action.payload
+          ),
+          1
+        );
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -122,7 +144,6 @@ const videosSlice = createSlice({
         state.loader = false;
       })
       .addCase(likeToVideo.fulfilled, (state, action) => {
-        state.singleVideo = action.payload.videoUpdate;
         state.success = true;
         state.loader = false;
       })
@@ -134,7 +155,6 @@ const videosSlice = createSlice({
         state.loader = false;
       })
       .addCase(disLikeToVideo.fulfilled, (state, action) => {
-        state.singleVideo = action.payload.videoUpdate;
         state.success = true;
         state.loader = false;
       })
@@ -146,7 +166,6 @@ const videosSlice = createSlice({
         state.loader = false;
       })
       .addCase(commentToVideo.fulfilled, (state, action) => {
-        state.comments = state.comments ?? [];
         state.comments.push(action.payload.comment);
         state.success = true;
         state.loader = false;
@@ -186,6 +205,6 @@ const videosSlice = createSlice({
 export const videosData = (state) => state.videos;
 
 // Export Reducer Actions
-export const { setVideoMessageEmpty } = videosSlice.actions;
+export const { setVideoMessageEmpty, like, dislike } = videosSlice.actions;
 
 export default videosSlice.reducer;

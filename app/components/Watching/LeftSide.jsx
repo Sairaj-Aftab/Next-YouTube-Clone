@@ -3,7 +3,7 @@ import React from "react";
 import Comments from "../Comments";
 import ProfileDescSection from "../ProfileDescSection";
 
-function LeftSide({ video }) {
+function LeftSide({ video, params }) {
   return (
     <>
       <div className="h-[475px]">
@@ -22,9 +22,9 @@ function LeftSide({ video }) {
         {video?.title}
       </h1>
       {/* Profile and Description Section */}
-      <ProfileDescSection video={video} />
+      <ProfileDescSection />
       {/* Comment Section */}
-      <Comments />
+      <Comments params={params} />
     </>
   );
 }
