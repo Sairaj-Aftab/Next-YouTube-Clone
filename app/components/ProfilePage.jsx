@@ -3,19 +3,25 @@ import profileImg from "@/public/profile.jpg";
 import { videosData } from "@/redux/features/videos/videoSlice";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import VideoCard from "./VideoCard/VideoCard";
-import DataFetching from "./DataFetching";
 import CardLoading from "./LoadingComponents/CardLoading";
+import { getUserVideos } from "@/redux/features/videos/videoApiSlice";
 
 function ProfilePage({ params }) {
+  const dispatch = useDispatch();
   const { data: session } = useSession();
 
   const { userVideos } = useSelector(videosData);
+
+  useEffect(() => {
+    if (params?.id) {
+      dispatch(getUserVideos(params?.id));
+    }
+  }, [dispatch]);
   return (
     <div>
-      <DataFetching params={params} />
       <div className="flex gap-5 justify-center items-center">
         {/* Profile Image */}
 

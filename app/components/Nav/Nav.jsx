@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
 import { BiBell, BiVideoPlus } from "react-icons/bi";
@@ -11,19 +11,13 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import ProfileMenu from "./ProfileMenu";
 import useDropdownPopupControl from "../../../hooks/useDropdownPopupControl";
-import { useDispatch, useSelector } from "react-redux";
-import { videosData } from "@/redux/features/videos/videoSlice";
-import { toast } from "react-toastify";
-import { searchVideos } from "@/redux/features/videos/videoApiSlice";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import makeSlug from "@/utils/makeSlug";
 
 function Nav() {
-  const dispatch = useDispatch();
   const { data: session } = useSession();
   const [search, setSearch] = useState();
   const router = useRouter();
-  const path = usePathname();
 
   const { open, toggleMenu, dropDownRef } = useDropdownPopupControl();
 
@@ -34,13 +28,8 @@ function Nav() {
     const makeSearchSlug = makeSlug(search);
     if (makeSearchSlug) {
       router.push(`/search/${makeSearchSlug}`);
-      dispatch(searchVideos(search));
     }
   };
-  // When reload the search page then it will be work
-  useEffect(() => {
-    dispatch(searchVideos(path.slice(8).split("-").join(" ")));
-  }, [dispatch]);
   return (
     <div className={styles.nav}>
       <div className="flex items-center gap-1 md:gap-2 lg:gap-5">

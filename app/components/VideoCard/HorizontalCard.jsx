@@ -9,47 +9,44 @@ const demoText =
   "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors ";
 
 function HorizontalCard({ videos }) {
-  const ref = useRef(null);
-
-  const [video, setVideo] = useState(false);
+  const videoRef = useRef(null);
 
   const mouseHoverPlay = (e) => {
     e.preventDefault();
-    setVideo(true);
-    if (ref.current) {
-      ref.current.play();
+    if (videoRef.current) {
+      videoRef.current.play();
     }
   };
   const mouseLeave = (e) => {
     e.preventDefault();
-    setVideo(false);
-    if (ref.current) {
-      ref.current.pause();
+    if (videoRef.current) {
+      videoRef.current.pause();
     }
   };
   return (
     <div className="w-full mt-3 flex flex-col gap-3">
       <Link href={`/video/fjkdfj434`} className="w-full flex gap-3 h-[202px]">
         <div
-          className="w-[360px]"
+          className="w-[360px] relative group"
           onMouseEnter={mouseHoverPlay}
           onMouseLeave={mouseLeave}
         >
-          {video ? (
-            <video
-              ref={ref}
-              src={videos?.video}
-              className="rounded-lg cursor-pointer"
-            ></video>
-          ) : (
+          {videos.thumbnail && (
             <Image
-              src={videos?.thumbnail}
+              src={videos.thumbnail}
               alt="Thumbnail"
               width={0}
               height={0}
               sizes="100vw"
-              className="rounded-lg w-full h-full object-cover cursor-pointer"
+              className="absolute top-0 left-0 z-10 rounded-lg w-full h-full object-cover cursor-pointer group-hover:hidden"
             />
+          )}
+          {videos.video && (
+            <video
+              ref={videoRef}
+              src={videos.video}
+              className="rounded-lg cursor-pointer"
+            ></video>
           )}
         </div>
         <div style={{ width: "calc(100% - 372px)" }}>

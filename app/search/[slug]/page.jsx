@@ -3,18 +3,29 @@ import HorizontalCardLoading from "@/app/components/LoadingComponents/Horizontal
 import MainPages from "@/app/components/MainPages";
 import CategoryNav from "@/app/components/MainView/CategoryNav";
 import HorizontalCard from "@/app/components/VideoCard/HorizontalCard";
+import { searchVideos } from "@/redux/features/videos/videoApiSlice";
 import { videosData } from "@/redux/features/videos/videoSlice";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 function SearchPage({ params }) {
-  const { searchVideos, message, loader } = useSelector(videosData);
+  const dispatch = useDispatch();
+
+  const {
+    searchVideos: searchingVideos,
+    message,
+    loader,
+  } = useSelector(videosData);
+
+  useEffect(() => {
+    dispatch(searchVideos(params?.slug.split("-").join(" ")));
+  }, [dispatch]);
   return (
     <MainPages>
       <CategoryNav />
       <div className="mt-12">
-        {searchVideos ? (
-          searchVideos.map((data, index) => (
+        {searchingVideos ? (
+          searchingVideos.map((data, index) => (
             <HorizontalCard key={index} videos={data} />
           ))
         ) : (

@@ -15,10 +15,6 @@ function MainView() {
 
   useEffect(() => {
     dispatch(getAllVideos());
-
-    // if (params?.id) {
-    //   dispatch(getUserVideos(params?.id));
-    // }
   }, [dispatch]);
 
   return (
