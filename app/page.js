@@ -5,7 +5,7 @@ import MainView from "./components/MainView/MainView";
 import { useEffect } from "react";
 import { getAllVideos } from "@/redux/features/videos/videoApiSlice";
 
-export default function Home() {
+export default async function Home() {
   const dispatch = useDispatch();
 
   useEffect(() => {
