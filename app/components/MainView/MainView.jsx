@@ -4,14 +4,12 @@ import CategoryNav from "./CategoryNav";
 import VideoCard from "../VideoCard/VideoCard";
 import { useDispatch, useSelector } from "react-redux";
 import { videosData } from "@/redux/features/videos/videoSlice";
-import HorizontalCard from "../VideoCard/HorizontalCard";
-import MainPages from "../MainPages";
 import CardLoading from "../LoadingComponents/CardLoading";
 import { getAllVideos } from "@/redux/features/videos/videoApiSlice";
 
 function MainView() {
   const dispatch = useDispatch();
-  const { videos, tags, loader } = useSelector(videosData);
+  const { videos } = useSelector(videosData);
 
   useEffect(() => {
     dispatch(getAllVideos());

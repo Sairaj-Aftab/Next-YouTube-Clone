@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import profileImg from "@/public/profile.jpg";
@@ -10,8 +11,10 @@ import {
   getComment,
 } from "@/redux/features/videos/videoApiSlice";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 function Comments({ params }) {
+  const router = useRouter();
   const dispatch = useDispatch();
   const { comments, singleVideo } = useSelector(videosData);
   const { data: session } = useSession();
@@ -19,16 +22,20 @@ function Comments({ params }) {
 
   const handleComment = (e) => {
     e.preventDefault();
-    if (!input) {
-      toast.warning("Field is required");
+    if (!session) {
+      router.push("/sign");
     } else {
-      dispatch(
-        commentToVideo({
-          videoId: params.id,
-          userId: session?.user?.doc._id,
-          desc: input,
-        })
-      );
+      if (!input) {
+        toast.warning("Field is required");
+      } else {
+        dispatch(
+          commentToVideo({
+            videoId: params.id,
+            userId: session?.user?.doc._id,
+            desc: input,
+          })
+        );
+      }
     }
   };
   useEffect(() => {

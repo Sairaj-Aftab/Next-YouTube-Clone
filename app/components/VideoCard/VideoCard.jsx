@@ -22,6 +22,7 @@ function VideoCard({ videos }) {
   const mouseHoverPlay = (e) => {
     e.preventDefault();
     if (videoRef.current) {
+      videoRef.current.volume = 0;
       videoRef.current.play();
     }
   };

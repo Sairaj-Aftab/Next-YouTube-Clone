@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -12,8 +13,10 @@ import {
   disLikeToVideo,
   likeToVideo,
 } from "@/redux/features/videos/videoApiSlice";
+import { useRouter } from "next/navigation";
 
 function ProfileDescSection() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const { singleVideo } = useSelector(videosData);
   const { data: session } = useSession();
@@ -24,16 +27,24 @@ function ProfileDescSection() {
   };
 
   const handleLike = () => {
-    dispatch(
-      likeToVideo({ id: singleVideo._id, userId: session?.user?.doc._id })
-    );
-    dispatch(like(session?.user?.doc._id));
+    if (!session) {
+      router.push("/sign");
+    } else {
+      dispatch(
+        likeToVideo({ id: singleVideo._id, userId: session?.user?.doc._id })
+      );
+      dispatch(like(session?.user?.doc._id));
+    }
   };
   const handleDislike = () => {
-    dispatch(
-      disLikeToVideo({ id: singleVideo._id, userId: session?.user?.doc._id })
-    );
-    dispatch(dislike(session?.user?.doc._id));
+    if (!session) {
+      router.push("/sign");
+    } else {
+      dispatch(
+        disLikeToVideo({ id: singleVideo._id, userId: session?.user?.doc._id })
+      );
+      dispatch(dislike(session?.user?.doc._id));
+    }
   };
   return (
     <>
