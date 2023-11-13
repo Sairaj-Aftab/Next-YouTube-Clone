@@ -7,13 +7,16 @@ import { NextResponse } from "next/server";
 
 // This function can be marked `async` if using `await` inside
 export function middleware(request) {
-  let cookie = request.cookies.get("next-auth.session-token");
-  if (!request.cookies.has("__Secure-next-auth.session-token")) {
-    return NextResponse.redirect(new URL("/sign", request.url));
+  if (request.nextUrl.origin == "http://localhost:3000") {
+    if (!request.cookies.has("next-auth.session-token")) {
+      return NextResponse.redirect(new URL("/sign", request.url));
+    }
   }
-  // if (!request.cookies.has("next-auth.session-token")) {
-  //   return NextResponse.redirect(new URL("/sign", request.url));
-  // }
+  if (request.nextUrl.origin == "https://saitube.vercel.app") {
+    if (!request.cookies.has("__Secure-next-auth.session-token")) {
+      return NextResponse.redirect(new URL("/sign", request.url));
+    }
+  }
 }
 
 // See "Matching Paths" below to learn more
