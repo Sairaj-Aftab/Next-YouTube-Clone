@@ -11,9 +11,9 @@ function MainView() {
   const dispatch = useDispatch();
   const { videos } = useSelector(videosData);
 
-  useEffect(() => {
-    dispatch(getAllVideos());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getAllVideos());
+  // }, [dispatch]);
 
   return (
     <>
