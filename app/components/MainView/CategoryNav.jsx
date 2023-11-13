@@ -7,48 +7,21 @@ import "swiper/css/navigation";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { videosData } from "@/redux/features/videos/videoSlice";
+import Skeleton from "react-loading-skeleton";
 
 function CategoryNav() {
   const { videos, loader } = useSelector(videosData);
-  // const video = videos && videos.find();
-  const allTags = new Set();
+  let allCatList = [];
+  videos?.forEach((data) => {
+    data.tags.forEach((tag) => {
+      allCatList.push(tag);
+    });
+  });
 
-  // videos &&
-  //   videos.length >= 0 &&
-  //   videos.forEach((video: any) => {
-  //     video.tags.forEach((tag: any) => {
-  //       allTags.add(tag);
-  //     });
-  //   });
+  const handleSearchTag = (e) => {
+    console.log(e.target.textContent);
+  };
 
-  // console.log(Array.from(allTags));
-
-  const list = [
-    "Coding Fun",
-    "React JS",
-    "Next JS",
-    "Learn Play",
-    "JavaScript Tutorial",
-    "Let's Python",
-    "Node JS",
-    "Workout",
-    "Jokes in Life",
-    "Make Happy",
-    "Works",
-    "Friends Forever",
-    "Hey Bro",
-    "Fit daily",
-    "Something wrong",
-    "Life will be ended",
-    "Life will be ended",
-    "Life will be ended",
-    "Life will be ended",
-    "Life will be ended",
-    "Life will be ended",
-    "Life will be ended",
-    "Life will be ended",
-    "Life will be ended",
-  ];
   return (
     <div className="category_slide fixed z-40 bg-[var(--base-background)] py-1 md:py-2 lg:py-3 mr-5">
       <div>
@@ -59,16 +32,41 @@ function CategoryNav() {
             navigation={true}
             modules={[Navigation]}
           >
-            {list?.map((data, index) => (
-              <SwiperSlide key={index}>
-                <Link
-                  href="/"
-                  className="text-[.8rem] sm:text-[1rem] py-[1px] sm:py-1 px-2"
-                >
-                  {data}
-                </Link>
-              </SwiperSlide>
-            ))}
+            <SwiperSlide>
+              <Link
+                href="/"
+                className="text-[.8rem] sm:text-[1rem] py-[1px] sm:py-1 px-2"
+              >
+                All
+              </Link>
+            </SwiperSlide>
+            {videos ? (
+              allCatList?.map((data, index) => (
+                <SwiperSlide key={index}>
+                  <span
+                    onClick={handleSearchTag}
+                    className="text-[.8rem] sm:text-[1rem] py-[1px] sm:py-1 px-2 cursor-pointer"
+                  >
+                    {data}
+                  </span>
+                </SwiperSlide>
+              ))
+            ) : (
+              <div className="flex gap-2">
+                <Skeleton
+                  baseColor="#202020"
+                  highlightColor="#444"
+                  height={20}
+                  width={90}
+                />
+                <Skeleton
+                  baseColor="#202020"
+                  highlightColor="#444"
+                  height={20}
+                  width={90}
+                />
+              </div>
+            )}
           </Swiper>
           {/* {list.map((item, index) => (
             <li
