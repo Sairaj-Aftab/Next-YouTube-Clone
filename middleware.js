@@ -11,9 +11,9 @@ export function middleware(request) {
   if (!request.cookies.has("__Secure-next-auth.session-token")) {
     return NextResponse.redirect(new URL("/sign", request.url));
   }
-  if (!request.cookies.has("next-auth.session-token")) {
-    return NextResponse.redirect(new URL("/sign", request.url));
-  }
+  // if (!request.cookies.has("next-auth.session-token")) {
+  //   return NextResponse.redirect(new URL("/sign", request.url));
+  // }
 }
 
 // See "Matching Paths" below to learn more
