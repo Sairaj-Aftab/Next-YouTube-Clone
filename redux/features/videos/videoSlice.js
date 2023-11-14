@@ -10,6 +10,7 @@ import {
   likeToVideo,
   searchPhotos,
   searchVideos,
+  trendVideos,
   updateViewsCounting,
   uploadVideo,
 } from "./videoApiSlice";
@@ -21,6 +22,7 @@ const videosSlice = createSlice({
     userVideos: null,
     singleVideo: null,
     searchVideos: null,
+    trendingVideos: null,
     videosByTag: null,
     comments: null,
     loader: false,
@@ -142,6 +144,15 @@ const videosSlice = createSlice({
       .addCase(searchVideos.fulfilled, (state, action) => {
         state.searchVideos = action.payload.video;
         state.message = action.payload.message;
+        state.success = true;
+        state.loader = false;
+      })
+      .addCase(trendVideos.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loader = false;
+      })
+      .addCase(trendVideos.fulfilled, (state, action) => {
+        state.trendingVideos = action.payload.video;
         state.success = true;
         state.loader = false;
       })

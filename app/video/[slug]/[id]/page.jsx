@@ -7,16 +7,21 @@ import { useEffect } from "react";
 import {
   getComment,
   getSingleVideo,
+  trendVideos,
 } from "@/redux/features/videos/videoApiSlice";
 
 function Video({ params }) {
   const dispatch = useDispatch();
-  const { singleVideo: video, loader } = useSelector(videosData);
+  const {
+    singleVideo: video,
+    trendingVideos,
+    loader,
+  } = useSelector(videosData);
   console.log(params.slug);
 
   useEffect(() => {
     dispatch(getSingleVideo(params.id));
-    // dispatch(getComment({ videoId: params.id }));
+    dispatch(trendVideos(params.id));
   }, [dispatch]);
 
   return (
@@ -27,7 +32,7 @@ function Video({ params }) {
         </div>
         {/* Suggested Section like Left Side */}
         <div className="px-2 sm:px-0 md:w-1/3">
-          <RightSide />
+          <RightSide videos={trendingVideos} />
         </div>
       </div>
     </div>

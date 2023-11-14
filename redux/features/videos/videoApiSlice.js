@@ -87,6 +87,18 @@ export const searchVideos = createAsyncThunk(
     }
   }
 );
+// Trending videos
+export const trendVideos = createAsyncThunk(
+  "videos/trendVideos",
+  async (id) => {
+    try {
+      const response = await axios.get(`/api/videos/trend/${id}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
 // like to video
 export const likeToVideo = createAsyncThunk(
   "videos/likeToVideo",
