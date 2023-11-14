@@ -21,7 +21,7 @@ const videosSlice = createSlice({
     userVideos: null,
     singleVideo: null,
     searchVideos: null,
-    tags: [],
+    videosByTag: null,
     comments: null,
     loader: false,
     success: false,
@@ -54,6 +54,15 @@ const videosSlice = createSlice({
           ),
           1
         );
+      }
+    },
+    searchByTag: (state, action) => {
+      if (action.payload) {
+        state.videosByTag = state.videos?.filter((item) =>
+          item.tags.some((tag) => new RegExp(action.payload, "i").test(tag))
+        );
+      } else {
+        state.videosByTag = null;
       }
     },
   },
@@ -205,6 +214,7 @@ const videosSlice = createSlice({
 export const videosData = (state) => state.videos;
 
 // Export Reducer Actions
-export const { setVideoMessageEmpty, like, dislike } = videosSlice.actions;
+export const { setVideoMessageEmpty, like, dislike, searchByTag } =
+  videosSlice.actions;
 
 export default videosSlice.reducer;

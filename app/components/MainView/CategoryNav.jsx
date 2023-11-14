@@ -5,11 +5,14 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import Link from "next/link";
-import { useSelector } from "react-redux";
-import { videosData } from "@/redux/features/videos/videoSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { searchByTag, videosData } from "@/redux/features/videos/videoSlice";
 import Skeleton from "react-loading-skeleton";
+import { useRouter } from "next/navigation";
 
 function CategoryNav() {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const { videos, loader } = useSelector(videosData);
   let allCatList = [];
   videos?.forEach((data) => {
@@ -19,7 +22,12 @@ function CategoryNav() {
   });
 
   const handleSearchTag = (e) => {
-    console.log(e.target.textContent);
+    router.push("/");
+    dispatch(searchByTag(e.target.textContent));
+  };
+  const allVideos = () => {
+    router.push("/");
+    dispatch(searchByTag(null));
   };
 
   return (
@@ -32,25 +40,28 @@ function CategoryNav() {
             navigation={true}
             modules={[Navigation]}
           >
-            <SwiperSlide>
-              <Link
-                href="/"
-                className="text-[.8rem] sm:text-[1rem] py-[1px] sm:py-1 px-2"
-              >
-                All
-              </Link>
-            </SwiperSlide>
             {videos ? (
-              allCatList?.map((data, index) => (
-                <SwiperSlide key={index}>
+              <>
+                <SwiperSlide>
                   <span
-                    onClick={handleSearchTag}
+                    onClick={allVideos}
                     className="text-[.8rem] sm:text-[1rem] py-[1px] sm:py-1 px-2 cursor-pointer"
                   >
-                    {data}
+                    All
                   </span>
                 </SwiperSlide>
-              ))
+
+                {allCatList?.map((data, index) => (
+                  <SwiperSlide key={index}>
+                    <span
+                      onClick={handleSearchTag}
+                      className="text-[.8rem] sm:text-[1rem] py-[1px] sm:py-1 px-2 cursor-pointer"
+                    >
+                      {data}
+                    </span>
+                  </SwiperSlide>
+                ))}
+              </>
             ) : (
               <div className="flex gap-2">
                 <Skeleton
@@ -68,19 +79,6 @@ function CategoryNav() {
               </div>
             )}
           </Swiper>
-          {/* {list.map((item, index) => (
-            <li
-              key={index}
-              className="first:bg-white first:text-black bg-[#272727] hover:bg-[#3c3c3c] rounded-md text-[var(--primary-text)]"
-            >
-              <a
-                href="/"
-                className="text-[.8rem] sm:text-[1rem] py-[1px] sm:py-1 px-2"
-              >
-                {item}
-              </a>
-            </li>
-          ))} */}
         </div>
       </div>
     </div>
