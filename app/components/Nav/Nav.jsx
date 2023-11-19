@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
 import { BiBell, BiVideoPlus } from "react-icons/bi";
@@ -13,8 +13,11 @@ import ProfileMenu from "./ProfileMenu";
 import useDropdownPopupControl from "../../../hooks/useDropdownPopupControl";
 import { useRouter } from "next/navigation";
 import makeSlug from "@/utils/makeSlug";
+import { useDispatch } from "react-redux";
+import { getAllVideos, getUser } from "@/redux/features/videos/videoApiSlice";
 
 function Nav() {
+  const dispatch = useDispatch();
   const { data: session } = useSession();
   const [search, setSearch] = useState();
   const router = useRouter();
@@ -30,6 +33,10 @@ function Nav() {
       router.push(`/search/${makeSearchSlug}`);
     }
   };
+
+  useEffect(() => {
+    dispatch(getAllVideos());
+  }, [dispatch]);
   return (
     <div className={styles.nav}>
       <div className="flex items-center gap-1 md:gap-2 lg:gap-5">

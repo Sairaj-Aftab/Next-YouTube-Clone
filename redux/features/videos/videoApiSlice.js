@@ -149,35 +149,14 @@ export const getComment = createAsyncThunk(
     }
   }
 );
-// Get Search Photos
-export const searchPhotos = createAsyncThunk(
-  "photos/searchPhotos",
-  async ({ search }) => {
-    try {
-      const response = await axios.post(
-        `http://localhost:5050/api/v1/photos/search`,
-        { search },
-        {
-          withCredentials: true,
-        }
-      );
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response.data.message);
-    }
-  }
-);
 
-// Delete Photos
-export const deletePhoto = createAsyncThunk(
-  "photos/deletePhoto",
-  async (id) => {
+// Add history
+export const addHistory = createAsyncThunk(
+  "userHistory/addHistory",
+  async ({ userId, videoId }) => {
     try {
-      const response = await axios.delete(
-        `http://localhost:5050/api/v1/photos/${id}`,
-        {
-          withCredentials: true,
-        }
+      const response = await axios.put(
+        `/api/user/history/${userId}/${videoId}`
       );
       return response.data;
     } catch (error) {
@@ -185,3 +164,24 @@ export const deletePhoto = createAsyncThunk(
     }
   }
 );
+// Trash history
+export const trashHistory = createAsyncThunk(
+  "userHistory/trashHistory",
+  async (userId) => {
+    try {
+      const response = await axios.put(`/api/user/history/${userId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+// Get user
+export const getUser = createAsyncThunk("user/getUser", async () => {
+  try {
+    const response = await axios.get(`/api/auth/session`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+});

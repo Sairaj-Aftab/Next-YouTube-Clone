@@ -14,7 +14,7 @@ export const authOption = {
         await connectMongoDB();
         const user = await User.findOne({
           email: credentials.email,
-        });
+        }).populate({ path: "history", populate: { path: "userId" } });
 
         if (!user) {
           throw new Error("User not found");

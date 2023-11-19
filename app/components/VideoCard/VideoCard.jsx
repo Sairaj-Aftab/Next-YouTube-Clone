@@ -89,18 +89,6 @@ function VideoCard({ videos }) {
           src={videos.video}
           className="w-full h-full absolute top-0 left-0 sm:rounded-md"
         ></video>
-        {/* {video ? (
-          <video ref={ref} src={videos.video} className="w-full h-52"></video>
-        ) : (
-          <Image
-            src={videos.thumbnail}
-            width={0}
-            height={0}
-            sizes="100vw"
-            alt="Thumbnail"
-            className="w-full h-52 object-cover sm:rounded-md"
-          />
-        )} */}
       </Link>
 
       <div className="flex gap-2 px-2 sm:px-0">
@@ -123,14 +111,14 @@ function VideoCard({ videos }) {
           </Link>
           <Link
             href="/profile/fjke564"
-            className="text-[#aaa] text-sm font-normal mt-1"
+            className="text-[#aaa] text-base sm:text-sm font-normal mt-1"
           >
             {videos?.userId?.name}
           </Link>
           <Link
             href={`/video/${videos?.slug}/${videos?._id}`}
             onClick={handleUpdateViews}
-            className="text-[#aaa] text-sm font-normal"
+            className="text-[#aaa] text-base sm:text-sm font-normal mt-0"
           >
             {viewsCountFormat(videos.views)} views .{" "}
             {timeAgo(new Date(videos.createdAt))}

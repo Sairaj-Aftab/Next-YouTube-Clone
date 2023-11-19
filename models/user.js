@@ -23,6 +23,11 @@ const userModel = new mongoose.Schema(
     subscribedUsers: {
       type: [String],
     },
+    history: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Videos",
+      default: [],
+    },
     fromGoogle: {
       type: Boolean,
       default: false,

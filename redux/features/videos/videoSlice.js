@@ -6,10 +6,12 @@ import {
   getAllVideos,
   getComment,
   getSingleVideo,
+  getUser,
   getUserVideos,
   likeToVideo,
   searchPhotos,
   searchVideos,
+  trashHistory,
   trendVideos,
   updateViewsCounting,
   uploadVideo,
@@ -18,6 +20,7 @@ import {
 const videosSlice = createSlice({
   name: "videos",
   initialState: {
+    user: null,
     videos: null,
     userVideos: null,
     singleVideo: null,
@@ -35,6 +38,9 @@ const videosSlice = createSlice({
       state.success = false;
       state.message = null;
       state.error = null;
+    },
+    clearUserHistory: (state, action) => {
+      state.user.history = [];
     },
     like: (state, action) => {
       if (!state.singleVideo.likes.includes(action.payload)) {
@@ -199,6 +205,24 @@ const videosSlice = createSlice({
       })
       .addCase(getComment.fulfilled, (state, action) => {
         state.comments = action.payload.comment;
+        state.success = true;
+        state.loader = false;
+      })
+      .addCase(getUser.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loader = false;
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.user = action.payload.user?.doc;
+        state.success = true;
+        state.loader = false;
+      })
+      .addCase(trashHistory.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loader = false;
+      })
+      .addCase(trashHistory.fulfilled, (state, action) => {
+        state.user.history = [];
         state.success = true;
         state.loader = false;
       })

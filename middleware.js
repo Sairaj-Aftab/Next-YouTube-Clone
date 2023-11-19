@@ -8,7 +8,10 @@ import { NextResponse } from "next/server";
 // This function can be marked `async` if using `await` inside
 export function middleware(request) {
   if (request.nextUrl.origin == "http://localhost:3000") {
-    if (!request.cookies.has("next-auth.session-token")) {
+    if (
+      !request.cookies.has("next-auth.session-token.0") &&
+      !request.cookies.has("next-auth.session-token")
+    ) {
       return NextResponse.redirect(new URL("/sign", request.url));
     }
   }
@@ -21,5 +24,5 @@ export function middleware(request) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/profile/:path*", "/upload", "/liked_videos"],
+  matcher: ["/profile/:path*", "/upload", "/history", "/liked_videos"],
 };

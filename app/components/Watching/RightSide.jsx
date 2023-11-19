@@ -12,11 +12,8 @@ const demoText =
 function RightSide({ videos }) {
   const ref = useRef(null);
 
-  const [video, setVideo] = useState(false);
-
   const mouseHoverPlay = (e) => {
     e.preventDefault();
-    setVideo(true);
     if (ref.current) {
       ref.current.volume = 0;
       ref.current.play();
@@ -24,7 +21,6 @@ function RightSide({ videos }) {
   };
   const mouseLeave = (e) => {
     e.preventDefault();
-    setVideo(false);
     if (ref.current) {
       ref.current.pause();
     }
@@ -37,7 +33,7 @@ function RightSide({ videos }) {
           <div
             onMouseEnter={mouseHoverPlay}
             onMouseLeave={mouseLeave}
-            className="w-full mt-3 flex flex-col gap-3 group"
+            className="w-full h-[100px] mt-3 flex flex-col gap-3 group"
           >
             <Link
               href={`/video/${data.slug}/${data._id}`}
@@ -47,7 +43,7 @@ function RightSide({ videos }) {
                 <video
                   ref={ref}
                   src={data.video}
-                  className="rounded-lg cursor-pointer"
+                  className="rounded-lg cursor-pointer h-[100px] w-full"
                 ></video>
                 {data.thumbnail && (
                   <Image
@@ -64,10 +60,10 @@ function RightSide({ videos }) {
                   {data.desc}
                 </h2>
                 <div>
-                  <p className="text-sm text-[#aaa] font-semibold">
+                  <p className="text-xs text-[#aaa] font-normal">
                     {data.userId?.name}
                   </p>
-                  <p className="text-sm text-[#aaa] font-semibold">
+                  <p className="text-xs text-[#aaa] font-normal">
                     {viewsCountFormat(data.views)} views .{" "}
                     {timeAgo(new Date(data.createdAt))}
                   </p>

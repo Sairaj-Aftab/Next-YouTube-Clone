@@ -5,23 +5,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { videosData } from "@/redux/features/videos/videoSlice";
 import { useEffect } from "react";
 import {
-  getComment,
+  addHistory,
   getSingleVideo,
   trendVideos,
 } from "@/redux/features/videos/videoApiSlice";
+import { useSession } from "next-auth/react";
 
 function Video({ params }) {
   const dispatch = useDispatch();
+  const { data: session } = useSession();
   const {
     singleVideo: video,
     trendingVideos,
     loader,
   } = useSelector(videosData);
-  console.log(params.slug);
 
   useEffect(() => {
     dispatch(getSingleVideo(params.id));
     dispatch(trendVideos(params.id));
+    // dispatch(
+    //   addHistory({ userId: session?.user?.doc._id, videoId: params.id })
+    // );
   }, [dispatch]);
 
   return (
