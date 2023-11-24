@@ -14,6 +14,7 @@ import {
 } from "@/redux/features/videos/videoApiSlice";
 import { useSession } from "next-auth/react";
 import swal from "sweetalert";
+import Avatar from "../Avatar";
 function VideoCard({ videos }) {
   const dispatch = useDispatch();
   const { data: session } = useSession();
@@ -93,12 +94,12 @@ function VideoCard({ videos }) {
 
       <div className="flex gap-2 px-2 sm:px-0">
         <Link href="/profile/65645">
-          <Image
-            src={profileImg}
-            alt="Profile"
+          <Avatar
+            img={videos?.userId?.img}
+            alt={videos?.userId?.name}
             width={45}
             height={45}
-            className="rounded-full object-cover"
+            classList="rounded-full object-cover"
           />
         </Link>
         <div className="flex flex-col">

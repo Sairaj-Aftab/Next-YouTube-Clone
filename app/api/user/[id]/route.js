@@ -2,11 +2,16 @@ import connectMongoDB from "@/config/database";
 import User from "@/models/user";
 import { NextResponse } from "next/server";
 
-// User Sign Up
+// User Edit Profile
 export async function PUT(request, { params }) {
   try {
     await connectMongoDB();
-    const user = await User.findByIdAndUpdate(params.id, {}, { new: true });
+    const data = await request.json();
+    const user = await User.findByIdAndUpdate(
+      params.id,
+      { ...data },
+      { new: true }
+    );
 
     return NextResponse.json({ user });
   } catch (error) {

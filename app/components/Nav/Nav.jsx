@@ -8,16 +8,17 @@ import logo from "../../../public/logo.png";
 import profileImg from "../../../public/profile.jpg";
 import styles from "./Nav.module.css";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 import { useSession } from "next-auth/react";
 import ProfileMenu from "./ProfileMenu";
 import useDropdownPopupControl from "../../../hooks/useDropdownPopupControl";
 import { useRouter } from "next/navigation";
 import makeSlug from "@/utils/makeSlug";
-import { useDispatch } from "react-redux";
-import { getAllVideos, getUser } from "@/redux/features/videos/videoApiSlice";
+import { videosData } from "@/redux/features/videos/videoSlice";
+import Avatar from "../Avatar";
 
 function Nav() {
-  const dispatch = useDispatch();
+  const { user } = useSelector(videosData);
   const { data: session } = useSession();
   const [search, setSearch] = useState();
   const router = useRouter();
@@ -33,10 +34,6 @@ function Nav() {
       router.push(`/search/${makeSearchSlug}`);
     }
   };
-
-  useEffect(() => {
-    dispatch(getAllVideos());
-  }, [dispatch]);
   return (
     <div className={styles.nav}>
       <div className="flex items-center gap-1 md:gap-2 lg:gap-5">
@@ -92,12 +89,12 @@ function Nav() {
               ref={dropDownRef}
               className="w-[40px] cursor-pointer rounded-full"
             >
-              <Image
-                src={profileImg}
-                alt="Sairaj Aftab"
-                width={40}
+              <Avatar
+                img={user?.img}
+                alt={user?.name}
                 height={40}
-                className="rounded-full object-cover"
+                width={40}
+                classList="rounded-full object-cover"
               />
             </div>
           </div>

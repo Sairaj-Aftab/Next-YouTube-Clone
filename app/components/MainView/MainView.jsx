@@ -5,15 +5,16 @@ import VideoCard from "../VideoCard/VideoCard";
 import { useDispatch, useSelector } from "react-redux";
 import { videosData } from "@/redux/features/videos/videoSlice";
 import CardLoading from "../LoadingComponents/CardLoading";
-import { getAllVideos } from "@/redux/features/videos/videoApiSlice";
+import { getAllVideos, getUser } from "@/redux/features/videos/videoApiSlice";
 
 function MainView() {
   const dispatch = useDispatch();
-  const { videos, videosByTag } = useSelector(videosData);
+  useEffect(() => {
+    dispatch(getAllVideos());
+    dispatch(getUser());
+  }, [dispatch]);
 
-  // useEffect(() => {
-  //   dispatch(getAllVideos());
-  // }, [dispatch]);
+  const { videos, videosByTag } = useSelector(videosData);
 
   return (
     <>

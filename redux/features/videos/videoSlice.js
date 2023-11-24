@@ -15,6 +15,7 @@ import {
   trendVideos,
   updateViewsCounting,
   uploadVideo,
+  userEdit,
 } from "./videoApiSlice";
 
 const videosSlice = createSlice({
@@ -214,6 +215,15 @@ const videosSlice = createSlice({
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.user = action.payload.user?.doc;
+        state.success = true;
+        state.loader = false;
+      })
+      .addCase(userEdit.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loader = false;
+      })
+      .addCase(userEdit.fulfilled, (state, action) => {
+        state.user = action.payload.user;
         state.success = true;
         state.loader = false;
       })
