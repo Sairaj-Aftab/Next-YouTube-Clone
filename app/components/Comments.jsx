@@ -12,11 +12,12 @@ import {
 } from "@/redux/features/videos/videoApiSlice";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Avatar from "./Avatar";
 
 function Comments({ params }) {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { comments, singleVideo } = useSelector(videosData);
+  const { user, comments, singleVideo } = useSelector(videosData);
   const { data: session } = useSession();
   const [input, setInput] = useState();
 
@@ -47,23 +48,25 @@ function Comments({ params }) {
         {comments && comments?.length} Comments
       </h1>
       {/* Post Comment Box */}
-      <form onSubmit={handleComment} className="flex gap-3 mt-5">
-        <Image
-          src={profileImg}
-          alt="Profile"
-          width={50}
-          height={50}
-          className="rounded-full"
-        />
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Add a comment..."
-          className="bg-transparent border-b w-full mb-3"
-        />
-        <button type="submit">Comment</button>
-      </form>
+      {user && (
+        <form onSubmit={handleComment} className="flex gap-3 mt-5">
+          <Avatar
+            img={user?.img}
+            alt={user?.name}
+            width={50}
+            height={50}
+            classList="rounded-full"
+          />
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Add a comment..."
+            className="bg-transparent border-b w-full mb-3 outline-none"
+          />
+          <button type="submit">Comment</button>
+        </form>
+      )}
       {/* Showing comment */}
       <div className="mt-5 flex flex-col gap-5">
         {comments &&
