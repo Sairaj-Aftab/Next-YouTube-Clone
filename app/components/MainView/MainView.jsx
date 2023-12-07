@@ -1,11 +1,23 @@
 "use client";
 import React, { useEffect } from "react";
+import axios from "axios";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import CategoryNav from "./CategoryNav";
 import VideoCard from "../VideoCard/VideoCard";
 import { useDispatch, useSelector } from "react-redux";
 import { videosData } from "@/redux/features/videos/videoSlice";
 import CardLoading from "../LoadingComponents/CardLoading";
-import { getAllVideos, getUser } from "@/redux/features/videos/videoApiSlice";
+import { getUser } from "@/redux/features/videos/videoApiSlice";
+// import { getAllVideos, getUser } from "@/redux/features/videos/videoApiSlice";
+
+const getAllVideos = createAsyncThunk("videos/getAllVideos", async () => {
+  try {
+    const response = await axios.get(`/api/videos`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+});
 
 function MainView() {
   const dispatch = useDispatch();

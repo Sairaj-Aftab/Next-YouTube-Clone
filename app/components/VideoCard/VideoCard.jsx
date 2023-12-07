@@ -102,7 +102,7 @@ function VideoCard({ videos }) {
             classList="rounded-full object-cover"
           />
         </Link>
-        <div className="flex flex-col">
+        <div className="flex flex-col" style={{ width: "calc(100% - 45px)" }}>
           <Link
             href={`/video/${videos?.slug}/${videos?._id}`}
             onClick={handleUpdateViews}

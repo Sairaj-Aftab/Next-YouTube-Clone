@@ -1,7 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { videosData } from "./videoSlice";
 
 export const uploadVideo = createAsyncThunk(
   "videos/upload_video",
