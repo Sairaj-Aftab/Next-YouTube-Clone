@@ -36,7 +36,7 @@ export async function GET(request, { params }) {
   try {
     await connectMongoDB();
 
-    const video = await Video.findById(params.id);
+    const video = await Video.findById(params.id).populate("userId");
 
     return NextResponse.json({ video });
   } catch (error) {

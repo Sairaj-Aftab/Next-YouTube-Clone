@@ -14,8 +14,9 @@ import {
   likeToVideo,
 } from "@/redux/features/videos/videoApiSlice";
 import { useRouter } from "next/navigation";
+import Avatar from "./Avatar";
 
-function ProfileDescSection() {
+function ProfileDescSection({ video }) {
   const router = useRouter();
   const dispatch = useDispatch();
   const { singleVideo } = useSelector(videosData);
@@ -52,25 +53,35 @@ function ProfileDescSection() {
       <div className="px-2 sm:px-0 sm:flex justify-between items-center">
         <div className="flex items-center gap-1 sm:gap-3">
           <Link
-            href={`/profile/fkjfksfj`}
+            href={`/${
+              session?.user?.doc._id === video?.userId._id
+                ? "profile"
+                : "userprofile"
+            }/${video?.userId._id}`}
             className="w-[50px] h-[50px] rounded-full"
           >
-            <Image
-              src={profileImg}
-              alt="Profile"
+            <Avatar
+              img={video?.userId?.img}
+              alt={video?.userId?.name}
               width={50}
               height={50}
-              className="rounded-full"
+              classList="rounded-full"
             />
           </Link>
           <div>
             <Link
-              href={`/profile/fjkd4534`}
+              href={`/${
+                session?.user?.doc._id === video?.userId._id
+                  ? "profile"
+                  : "userprofile"
+              }/${video?.userId._id}`}
               className="text-base md:text-lg font-semibold text-white"
             >
-              Sairaj Aftab
+              {video?.userId?.name}
             </Link>
-            <p className="text-sm font-normal text-[#aaa]">5.6k subscribers</p>
+            <p className="text-sm font-normal text-[#aaa]">
+              {viewsCountFormat(video?.userId?.subscribers.length)} subscribers
+            </p>
           </div>
           <button className="py-1 md:py-2 px-2 md:px-3 text-sm font-semibold text-[var(--base-background)] bg-white rounded-full ml-2 md:ml-5">
             Subscribe
