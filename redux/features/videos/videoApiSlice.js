@@ -174,7 +174,7 @@ export const trashHistory = createAsyncThunk(
     }
   }
 );
-// Get user
+// Get Auth user
 export const getUser = createAsyncThunk("user/getUser", async () => {
   try {
     const response = await axios.get(`/api/auth/session`);
@@ -183,12 +183,24 @@ export const getUser = createAsyncThunk("user/getUser", async () => {
     throw new Error(error.response.data.message);
   }
 });
-// Get user
+// Auth user edit
 export const userEdit = createAsyncThunk(
   "user/userEdit",
   async ({ id, data }) => {
     try {
       const response = await axios.put(`/api/user/${id}`, data);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+// Get user
+export const getNormalUser = createAsyncThunk(
+  "user/getNormalUser",
+  async (id) => {
+    try {
+      const response = await axios.get(`/api/user/${id}`);
       return response.data;
     } catch (error) {
       throw new Error(error.response.data.message);

@@ -3,8 +3,8 @@ import {
   commentToVideo,
   deleteVideo,
   disLikeToVideo,
-  getAllVideos,
   getComment,
+  getNormalUser,
   getSingleVideo,
   getUser,
   getUserVideos,
@@ -17,6 +17,7 @@ import {
   uploadVideo,
   userEdit,
 } from "./videoApiSlice";
+import { getAllVideos } from "@/app/components/MainView/MainView";
 
 const videosSlice = createSlice({
   name: "videos",
@@ -223,6 +224,15 @@ const videosSlice = createSlice({
         state.loader = false;
       })
       .addCase(userEdit.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.success = true;
+        state.loader = false;
+      })
+      .addCase(getNormalUser.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loader = false;
+      })
+      .addCase(getNormalUser.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.success = true;
         state.loader = false;

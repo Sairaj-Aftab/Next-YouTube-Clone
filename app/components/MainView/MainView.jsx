@@ -10,14 +10,17 @@ import CardLoading from "../LoadingComponents/CardLoading";
 import { getUser } from "@/redux/features/videos/videoApiSlice";
 // import { getAllVideos, getUser } from "@/redux/features/videos/videoApiSlice";
 
-const getAllVideos = createAsyncThunk("videos/getAllVideos", async () => {
-  try {
-    const response = await axios.get(`/api/videos`);
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response.data.message);
+export const getAllVideos = createAsyncThunk(
+  "videos/getAllVideos",
+  async () => {
+    try {
+      const response = await axios.get(`/api/videos`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
   }
-});
+);
 
 function MainView() {
   const dispatch = useDispatch();

@@ -9,18 +9,30 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import VideoCard from "./VideoCard/VideoCard";
 import CardLoading from "./LoadingComponents/CardLoading";
-import { getUser, getUserVideos } from "@/redux/features/videos/videoApiSlice";
+import {
+  getNormalUser,
+  getUser,
+  getUserVideos,
+} from "@/redux/features/videos/videoApiSlice";
+import { usePathname } from "next/navigation";
 import Avatar from "./Avatar";
 
 function ProfilePage({ params }) {
+  const pathname = usePathname();
   const dispatch = useDispatch();
   const { user, userVideos } = useSelector(videosData);
   const { data: session } = useSession();
 
   useEffect(() => {
-    dispatch(getUser());
     if (params?.id) {
       dispatch(getUserVideos(params?.id));
+    }
+
+    if (pathname === `/profile/${params?.id}`) {
+      dispatch(getUser());
+    }
+    if (pathname === `/userprofile/${params?.id}`) {
+      dispatch(getNormalUser(params?.id));
     }
   }, [dispatch]);
   return (
@@ -35,18 +47,15 @@ function ProfilePage({ params }) {
           width={150}
           classList="rounded-full w-[80px] h-[80px] sm:w-[150px] sm:h-[150px]"
         />
-
-        {/* <Image
-          src={profileImg}
-          alt="Profile"
-          height={150}
-          width={150}
-          className="rounded-full w-[80px] h-[80px] sm:w-[150px] sm:h-[150px]"
-        /> */}
         <div className="flex gap-2 flex-col">
           <h2 className="text-3xl font-normal flex gap-3 items-center">
             {user ? user.name : session?.user?.name}
-            <Link href={`/profileedit/${session && session.user?.doc?._id}`}>
+            <Link
+              href={`/profileedit/${session && session.user?.doc?._id}`}
+              className={`${
+                session?.user?.doc._id === params.id ? "visible" : "invisible"
+              }`}
+            >
               <LiaUserEditSolid style={{ cursor: "pointer" }} />
             </Link>
           </h2>

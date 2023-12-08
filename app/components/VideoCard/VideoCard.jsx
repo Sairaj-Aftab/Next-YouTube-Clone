@@ -62,10 +62,10 @@ function VideoCard({ videos }) {
       onMouseEnter={mouseHoverPlay}
       onMouseLeave={mouseLeave}
     >
-      {session?.user?.doc._id == videos?.userId && (
+      {session?.user?.doc._id == videos?.userId._id && (
         <div
           onClick={handleDeleteVideo}
-          className="absolute z-50 top-2 right-2 bg-slate-200 rounded-full p-1"
+          className="absolute z-50 top-2 right-2 bg-slate-200 rounded-full p-1 invisible group-hover:visible"
         >
           <MdDelete color="#000000" size={25} />
         </div>
@@ -93,7 +93,13 @@ function VideoCard({ videos }) {
       </Link>
 
       <div className="flex gap-2 px-2 sm:px-0">
-        <Link href="/profile/65645">
+        <Link
+          href={`/${
+            session?.user?.doc._id === videos?.userId._id
+              ? "profile"
+              : "userprofile"
+          }/${videos?.userId._id}`}
+        >
           <Avatar
             img={videos?.userId?.img}
             alt={videos?.userId?.name}
@@ -111,7 +117,11 @@ function VideoCard({ videos }) {
             {videos.title}
           </Link>
           <Link
-            href="/profile/fjke564"
+            href={`/${
+              session?.user?.doc._id === videos?.userId._id
+                ? "profile"
+                : "userprofile"
+            }/${videos?.userId._id}`}
             className="text-[#aaa] text-base sm:text-sm font-normal mt-1"
           >
             {videos?.userId?.name}

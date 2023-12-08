@@ -31,7 +31,7 @@ function CategoryNav() {
   };
 
   return (
-    <div className="category_slide fixed z-40 bg-[var(--base-background)] py-1 md:py-2 lg:py-3 mr-5">
+    <div className="category_slide fixed z-[99999999] bg-[var(--base-background)] py-1 md:py-2 lg:py-3 mr-5">
       <div>
         <div className="flex gap-3 items-center">
           <Swiper

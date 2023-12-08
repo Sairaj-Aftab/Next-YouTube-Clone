@@ -18,3 +18,14 @@ export async function PUT(request, { params }) {
     return NextResponse.json({ error: error.message });
   }
 }
+// User get by id
+export async function GET(request, { params }) {
+  try {
+    await connectMongoDB();
+    const user = await User.findById(params.id);
+
+    return NextResponse.json({ user });
+  } catch (error) {
+    return NextResponse.json({ error: error.message });
+  }
+}
